@@ -1,13 +1,16 @@
-import React from 'react';
-import { SafeAreaView } from 'react-native';
-import Onboarding from './screens/Onboarding'; // Certifique-se de que o caminho está correto
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import OnboardingScreen from "./screens/Onboarding";
 
-const App = () => {
+const Stack = createNativeStackNavigator();
+
+export default function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Onboarding />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-export default App;
+}
