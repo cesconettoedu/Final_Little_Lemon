@@ -1,10 +1,15 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Checkbox from 'expo-checkbox';
 
 
 const Profile = () => {
-  
+
+   const [isCheckedA, setCheckedA] = useState(false);
+   const [isCheckedB, setCheckedB] = useState(false);
+   const [isCheckedC, setCheckedC] = useState(false);
+   const [isCheckedD, setCheckedD] = useState(false);
   
   return (
     <View style={styles.container}>
@@ -33,7 +38,7 @@ const Profile = () => {
           </View>
       </View>
 
-      <View style={styles.infoContainer}>
+      <ScrollView style={styles.infoContainer}>
         <Text style={styles.subHeaderText}>Personal information</Text>
 
         <View style={{flexDirection: 'row', alignItems:'center', gap: 20}}>
@@ -87,10 +92,61 @@ const Profile = () => {
           keyboardType="numeric"
         />
 
+        <Text style={styles.subHeaderText}>Email information</Text>
 
-      </View>
+
+        <View style={styles.section}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isCheckedA}
+            onValueChange={setCheckedA}
+            color={isCheckedA ? '#495E57' : undefined}
+          />
+          <Text >Order statuses</Text>
+        </View>
+        <View style={styles.section}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isCheckedB}
+            onValueChange={setCheckedB}
+            color={isCheckedB ? '#495E57' : undefined}
+          />
+          <Text >Order statuses</Text>
+        </View>
+        <View style={styles.section}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isCheckedC}
+            onValueChange={setCheckedC}
+            color={isCheckedC ? '#495E57' : undefined}
+          />
+          <Text >Order statuses</Text>
+        </View>
+        <View style={styles.section}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isCheckedD}
+            onValueChange={setCheckedD}
+            color={isCheckedD ? '#495E57' : undefined}
+          />
+          <Text >Order statuses</Text>
+        </View>
+
+        <TouchableOpacity style={styles.btnLogout}>
+          <Text style={styles.btnTextLogOut}>Log out</Text>
+        </TouchableOpacity> 
+
+        <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center', gap: 20, marginBottom: 20}}>
+          <TouchableOpacity style={styles.btnChange}>
+            <Text style={styles.btnText}>Discard changes</Text>
+          </TouchableOpacity> 
+          <TouchableOpacity style={styles.btnChange}>
+            <Text style={styles.btnText}>Save changes</Text>
+          </TouchableOpacity> 
+        </View>
 
 
+      </ScrollView>
 
     </View>
   );
@@ -119,9 +175,9 @@ const styles = StyleSheet.create({
     color: '#495E57',
   },
   subHeaderText:{
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginVertical: 10,
   },
   infoContainer:{
     
@@ -150,6 +206,29 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 8,
   },
+
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    margin: 8,
+  },
+
+  btnLogout: {
+    marginTop: 20,
+    backgroundColor:'#F4CE14',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'grey',
+  },
+  btnTextLogOut: {
+    paddingHorizontal: 15,
+    paddingVertical:10,
+    letterSpacing: 2,
+    fontWeight: 'bold',
+    textAlign:'center'
+  }
 
 
  
