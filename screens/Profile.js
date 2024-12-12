@@ -38,18 +38,18 @@ const Profile = () => {
 
         <View style={{flexDirection: 'row', alignItems:'center', gap: 20}}>
           <View style={{flexDirection:'column'}}>
-            <Text style={styles.labelText}>Avatar</Text>
+            <Text style={{color:'gray'}}>Avatar</Text>
             <Image
               source={require('../assets/little-lemon/user.png')}
               style={{width: 65 , height: 65 , borderRadius: 50}}
               contentFit="contain"
             />
           </View>
-          <TouchableOpacity>
-            <Text>Change</Text>
+          <TouchableOpacity style={styles.btnChange}>
+            <Text style={styles.btnText}>Change</Text>
           </TouchableOpacity> 
-          <TouchableOpacity>
-            <Text>Remove</Text>
+          <TouchableOpacity style={styles.btnChange}>
+            <Text style={styles.btnText}>Remove</Text>
           </TouchableOpacity> 
         </View> 
 
@@ -126,8 +126,20 @@ const styles = StyleSheet.create({
   infoContainer:{
     
   },
+  btnChange:{
+    marginTop: 20,
+    backgroundColor:'#495E57',
+    borderRadius: 10
+  },
+  btnText:{
+    color: '#EDEFEE',
+    paddingHorizontal: 15,
+    paddingVertical:10,
+    letterSpacing: 2,
+  },
   labelText: {
     marginTop: 15,
+    color:"gray"
   },
   input: {
     width: '100%',
