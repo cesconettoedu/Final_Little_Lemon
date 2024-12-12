@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const Onboarding = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+
+  const navigation = useNavigation();
 
   const handleCompleteOnboarding = () => {
     const nameValid = /^[A-Za-z\s]+$/.test(name);
@@ -18,9 +24,20 @@ const Onboarding = () => {
     } else {
       Alert.alert('Success', 'Onboarding completed successfully!');
       // Here do something after click on Next button
+      completeOnboarding()
     }
   };
 
+  const completeOnboarding = async () => {
+    try {
+    await AsyncStorage.setItem('onboardingCompleted', 'true');
+    navigation.navigate('Profile'); // Navigate to Profile screen
+    } catch (e) {
+    console.error('Error saving AsyncStorage:', error);
+    }
+  };  
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -57,8 +74,8 @@ const Onboarding = () => {
       <View style={styles.btnContainer}>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: name && email && /\S+@\S+\.\S+/.test(email) ? '#F4CE14' : 'lightgray' }]}
-          onPress={handleCompleteOnboarding}
           disabled={!name || !email || !/\S+@\S+\.\S+/.test(email)}
+          onPress={handleCompleteOnboarding}
         >
           <Text style={[styles.labelText, { color: name && email && /\S+@\S+\.\S+/.test(email) ? '#333333' : 'gray' }]}>Next</Text>
         </TouchableOpacity>
