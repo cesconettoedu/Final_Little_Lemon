@@ -24,17 +24,21 @@ const Onboarding = () => {
     } else {
       Alert.alert('Success', 'Onboarding completed successfully!');
       // Here do something after click on Next button
-      completeOnboarding()
+      completeOnboarding(name, email);
     }
   };
 
-  const completeOnboarding = async () => {
+  const completeOnboarding = async (firstName, email) => {
+    const firstPair = ["@username", `${firstName}`]
+    const secondPair = ["@useremail", `${email}`]
+
     try {
-    await AsyncStorage.setItem('onboardingCompleted', 'true');
-    navigation.navigate('Profile'); // Navigate to Profile screen
+   // await AsyncStorage.setItem('onboardingCompleted', 'true');
+      await AsyncStorage.multiSet([firstPair, secondPair])
     } catch (e) {
-    console.error('Error saving AsyncStorage:', error);
+      console.error('Error saving AsyncStorage:', error);
     }
+    navigation.navigate('Profile'); // Navigate to Profile screen
   };  
 
   

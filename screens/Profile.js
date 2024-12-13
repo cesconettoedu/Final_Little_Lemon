@@ -1,21 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Checkbox from 'expo-checkbox';
 
 
 const Profile = () => {
+  const navigation = useNavigation();
 
-   const [isCheckedA, setCheckedA] = useState(false);
-   const [isCheckedB, setCheckedB] = useState(false);
-   const [isCheckedC, setCheckedC] = useState(false);
-   const [isCheckedD, setCheckedD] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState();
+
+  //just for cosmetics
+  const [isCheckedA, setCheckedA] = useState(false);
+  const [isCheckedB, setCheckedB] = useState(false);
+  const [isCheckedC, setCheckedC] = useState(false);
+  const [isCheckedD, setCheckedD] = useState(false);
+
+  useEffect(() => { 
+    //Example usage: Get user data from AsyncStorage
+        
+    const getUser = async () => {
+      try {
+        setFirstName(await AsyncStorage.getItem('@username'));
+        setEmail(await AsyncStorage.getItem('@useremail'));
+        
+         
+      } catch (error) {
+        console.error('Error geting User:', error);
+      }
+    };
+    getUser();
+
+
+  }, []);
   
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>         
           {/* back button */}
-          <TouchableOpacity>
+          <TouchableOpacity 
+           //</View>onPress={navigation.navigate('Onboarding')}
+           >
             <Ionicons name="arrow-back-circle-sharp" size={42} color="#495E57" />          
           </TouchableOpacity>
           
@@ -62,24 +92,24 @@ const Profile = () => {
         <TextInput
           style={styles.input}
           placeholder="Type your first name"
-          //value={name}
-          //onChangeText={setName}
+          value={firstName}
+          onChangeText={setFirstName}
         />
 
         <Text style={styles.labelText}>Last Name</Text>
         <TextInput
           style={styles.input}
           placeholder="Type your last name"
-          //value={name}
-          //onChangeText={setName}
+          value={lastName}
+          onChangeText={setLastName}
         />
 
         <Text style={styles.labelText}>E-mail</Text>
         <TextInput
           style={styles.input}
           placeholder="Type your email"
-          //value={name}
-          //onChangeText={setName}
+          value={email}
+          onChangeText={setEmail}
           keyboardType="email-address"
         />
 
@@ -87,8 +117,8 @@ const Profile = () => {
         <TextInput
           style={styles.input}
           placeholder="Type your phone number"
-          //value={name}
-          //onChangeText={setName}
+          value={phone}
+          onChangeText={setPhone}
           keyboardType="numeric"
         />
 
