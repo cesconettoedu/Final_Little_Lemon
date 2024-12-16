@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Checkbox from 'expo-checkbox';
 
+import Logo from '../assets/little-lemon/Logo.png';
+import Photo from '../assets/little-lemon/user.png';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -14,6 +16,8 @@ const Profile = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState();
+  const [pic, setPic] = useState(`${Photo}`)
+  const [noPic, setNoPic] = useState(true)
 
   //just for cosmetics
   const [isCheckedA, setCheckedA] = useState(false);
@@ -28,30 +32,73 @@ const Profile = () => {
       try {
         setFirstName(await AsyncStorage.getItem('@username'));
         setEmail(await AsyncStorage.getItem('@useremail'));
+        setLastName(await AsyncStorage.getItem('@userlastname'));
+        setPhone(await AsyncStorage.getItem('@userphone'));
         
-         
       } catch (error) {
         console.error('Error geting User:', error);
       }
     };
     getUser();
-
-
   }, []);
   
+  const handleSaveChanges = async () => {
+    const firstPair = ["@username", `${firstName}`]
+    const secondPair = ["@useremail", `${email}`]
+    const thirdPair = ["@userlastname", `${lastName}`]
+    const fourthPair = ["@userphone", `${phone}`]
+    try {
+      await AsyncStorage.multiSet([firstPair, secondPair, thirdPair, fourthPair]);
+      Alert.alert('Info saved');
+    } catch (e) {
+      console.error('Error saving AsyncStorage:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage has been cleared');
+      navigation.navigate('Onboarding');
+    } catch (error) {
+        console.error('Failed to clear AsyncStorage:', error);
+    }
+
+  }
+
+  const changePic = () => {
+    setNoPic(true)
+    setPic(`${Photo}`)
+  }
+
+  const removePic = () => {
+    setNoPic(false)
+    const first = firstName.charAt(0);
+    const last = lastName.charAt(0);
+    setPic(first + last)   
+  }
+
+
+  
+console.log(pic);
+
+ 
+  
+
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>         
           {/* back button */}
           <TouchableOpacity 
-           //</View>onPress={navigation.navigate('Onboarding')}
+           //onPress={navigation.navigate('Onboarding')}
            >
             <Ionicons name="arrow-back-circle-sharp" size={42} color="#495E57" />          
           </TouchableOpacity>
           
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <Image
-              source={require('../assets/little-lemon/Logo.png')}
+              source={`${Logo}`}
               style={{width: 50 , height: 50}}
               contentFit="contain"
             />
@@ -60,11 +107,15 @@ const Profile = () => {
 
           <View>
             {/* image perfil*/}
+            {noPic ?
             <Image
-              source={require('../assets/little-lemon/user.png')}
+              source={`${pic}`}
               style={{width: 50 , height: 50, borderRadius: 50}}
               contentFit="contain"
             />
+              : 
+              <Text style={styles.initialNoImageA}>{pic}</Text>
+            }
           </View>
       </View>
 
@@ -74,16 +125,26 @@ const Profile = () => {
         <View style={{flexDirection: 'row', alignItems:'center', gap: 20}}>
           <View style={{flexDirection:'column'}}>
             <Text style={{color:'gray'}}>Avatar</Text>
-            <Image
-              source={require('../assets/little-lemon/user.png')}
+            {noPic ?
+              <Image
+              source={`${pic}`}
               style={{width: 65 , height: 65 , borderRadius: 50}}
               contentFit="contain"
-            />
+              />
+             : 
+              <Text style={styles.initialNoImageB}>{pic}</Text>
+            }
           </View>
-          <TouchableOpacity style={styles.btnChange}>
+          <TouchableOpacity 
+            style={styles.btnChange}
+            onPress={changePic}
+          >
             <Text style={styles.btnText}>Change</Text>
           </TouchableOpacity> 
-          <TouchableOpacity style={styles.btnChange}>
+          <TouchableOpacity 
+            style={styles.btnChange}
+            onPress={removePic}
+          >
             <Text style={styles.btnText}>Remove</Text>
           </TouchableOpacity> 
         </View> 
@@ -141,7 +202,7 @@ const Profile = () => {
             onValueChange={setCheckedB}
             color={isCheckedB ? '#495E57' : undefined}
           />
-          <Text >Order statuses</Text>
+          <Text >Password changes</Text>
         </View>
         <View style={styles.section}>
           <Checkbox
@@ -150,7 +211,7 @@ const Profile = () => {
             onValueChange={setCheckedC}
             color={isCheckedC ? '#495E57' : undefined}
           />
-          <Text >Order statuses</Text>
+          <Text >Special offers</Text>
         </View>
         <View style={styles.section}>
           <Checkbox
@@ -159,18 +220,26 @@ const Profile = () => {
             onValueChange={setCheckedD}
             color={isCheckedD ? '#495E57' : undefined}
           />
-          <Text >Order statuses</Text>
+          <Text >Newsletter</Text>
         </View>
 
-        <TouchableOpacity style={styles.btnLogout}>
+        <TouchableOpacity 
+          style={styles.btnLogout}
+          onPress={handleLogout}
+        >
           <Text style={styles.btnTextLogOut}>Log out</Text>
         </TouchableOpacity> 
 
         <View style={{flexDirection: 'row', justifyContent:'center', alignItems:'center', gap: 20, marginBottom: 20}}>
-          <TouchableOpacity style={styles.btnChange}>
+          <TouchableOpacity 
+            style={styles.btnChange}
+          >
             <Text style={styles.btnText}>Discard changes</Text>
           </TouchableOpacity> 
-          <TouchableOpacity style={styles.btnChange}>
+          <TouchableOpacity 
+            style={styles.btnChange}
+            onPress={handleSaveChanges}
+          >
             <Text style={styles.btnText}>Save changes</Text>
           </TouchableOpacity> 
         </View>
@@ -216,6 +285,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor:'#495E57',
     borderRadius: 10
+  },
+  initialNoImageA:{
+    backgroundColor:'#8bcacb', 
+    fontSize: 25, 
+    borderRadius: 50, 
+    paddingVertical:8,
+    paddingHorizontal: 11
+  },
+  initialNoImageB:{
+    backgroundColor:'#8bcacb', 
+    fontSize: 32, 
+    borderRadius: 50, 
+    paddingVertical:11,
+    paddingHorizontal: 14
   },
   btnText:{
     color: '#EDEFEE',

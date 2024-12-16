@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Onboarding = () => {
+  const [filled, setFilled] = useState();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
@@ -24,17 +25,19 @@ const Onboarding = () => {
     } else {
       Alert.alert('Success', 'Onboarding completed successfully!');
       // Here do something after click on Next button
-      completeOnboarding(name, email);
+      setFilled('true');
+      completeOnboarding(filled, name, email);
     }
   };
 
-  const completeOnboarding = async (firstName, email) => {
+  const completeOnboarding = async (filled, firstName, email) => {
+    const complete = ["onboardingCompleted", `${filled}`]
     const firstPair = ["@username", `${firstName}`]
     const secondPair = ["@useremail", `${email}`]
 
     try {
    // await AsyncStorage.setItem('onboardingCompleted', 'true');
-      await AsyncStorage.multiSet([firstPair, secondPair])
+      await AsyncStorage.multiSet([complete, firstPair, secondPair])
     } catch (e) {
       console.error('Error saving AsyncStorage:', error);
     }
