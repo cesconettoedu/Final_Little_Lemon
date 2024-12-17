@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Checkbox from 'expo-checkbox';
@@ -15,8 +16,8 @@ const Profile = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState();
-  const [pic, setPic] = useState(`${Photo}`)
+  const [phone, setPhone] = useState(0);
+  const [pic, setPic] = useState(null);
   const [noPic, setNoPic] = useState(true)
 
   //just for cosmetics
@@ -26,8 +27,7 @@ const Profile = () => {
   const [isCheckedD, setCheckedD] = useState(false);
 
   useEffect(() => { 
-    //Example usage: Get user data from AsyncStorage
-        
+    //Example usage: Get user data from AsyncStorage  
     const getUser = async () => {
       try {
         setFirstName(await AsyncStorage.getItem('@username'));
@@ -40,6 +40,11 @@ const Profile = () => {
       }
     };
     getUser();
+
+    if(lastName && phone === null){
+      setLastName('.')
+      setPhone(0)
+    }
   }, []);
   
   const handleSaveChanges = async () => {
@@ -66,9 +71,21 @@ const Profile = () => {
 
   }
 
-  const changePic = () => {
+  const changePic = async () => {
     setNoPic(true)
-    setPic(`${Photo}`)
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images', 'videos'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    setPic(result.assets[0].uri);
+    
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   }
 
   const removePic = () => {
@@ -76,14 +93,7 @@ const Profile = () => {
     const first = firstName.charAt(0);
     const last = lastName.charAt(0);
     setPic(first + last)   
-  }
-
-
-  
-console.log(pic);
-
- 
-  
+  }  
 
 
   return (
@@ -109,7 +119,7 @@ console.log(pic);
             {/* image perfil*/}
             {noPic ?
             <Image
-              source={`${pic}`}
+              source={{uri: `${pic}`}}
               style={{width: 50 , height: 50, borderRadius: 50}}
               contentFit="contain"
             />
@@ -127,7 +137,7 @@ console.log(pic);
             <Text style={{color:'gray'}}>Avatar</Text>
             {noPic ?
               <Image
-              source={`${pic}`}
+              source={{uri: `${pic}`}}
               style={{width: 65 , height: 65 , borderRadius: 50}}
               contentFit="contain"
               />
