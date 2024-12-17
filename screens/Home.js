@@ -69,7 +69,7 @@ return (
         </TouchableOpacity>
       </View>
       
-      <View style={{marginTop:20 }}>
+      <View style={{marginTop:20  }}>
         <Text style={{fontSize: 20 , fontWeight: 'bold', marginBottom: 20}}> ORDER FOR DELIVERY!</Text>
 
         <FlatList
@@ -82,7 +82,28 @@ return (
           keyExtractor={(item) => item.id}
           horizontal={true}  
         />
+
+        <View style={styles.bottomLine} />
       </View>
+
+      <ScrollView>
+
+        <View>
+          <Text style={{fontSize: 18 , fontWeight: '700', marginBottom: 5}}>Greek Salad</Text>
+          <View style={{flexDirection:'row', gap: 10}}>
+            <View style={{width: '70%', justifyContent:'space-around'}}>
+              <Text numberOfLines={2} style={{fontSize: 16 , fontWeight: '400', }}>Our delicious salad is served with Feta cheese and peeled cucumber. Includes tomatoes, onions, olives, salt and oregano in the ingredients.</Text>
+              <Text style={{fontSize: 18 , fontWeight: '700', color: '#495E57'}}>$ 12.99</Text>
+            </View>
+            <Image
+              source={`${ShowImage}`}
+              style={{width: 90, height: 90, borderRadius: 10 }}
+              contentFit="contain"
+            />
+          </View>
+        </View>
+
+      </ScrollView>
 
       
   </View>    
@@ -134,7 +155,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',        
     padding: 10,
     marginRight: 20,
-     
-  }
+  },
+  bottomLine: {
+    borderBottomWidth: 1,   
+    borderBottomColor: 'gray',  
+    marginTop: 20, 
+  },
+
   
 });
