@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { View, Text, StyleSheet,FlatList, ScrollView, Image, TouchableOpacity, TextInput, Alert } from 'react-native'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import Logo from '../assets/little-lemon/Logo.png';
@@ -7,7 +7,28 @@ import Photo from '../assets/little-lemon/user.png';
 import ShowImage from '../assets/little-lemon/Hero_image.png';
 
 const Home = () => {
-  return (
+
+  const menuTitles = [
+    {
+      id: 1,
+      title: 'Starters',
+    },
+    {
+      id: 2,
+      title: 'Mains',
+    },
+     {
+      id: 3,
+      title: 'Desserts',
+    },
+     {
+      id: 4,
+      title: 'Drinks',
+    },
+  ]
+
+return (
+
 <View style={styles.container}>
       <View style={styles.headerContainer}>                  
           <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -46,8 +67,24 @@ const Home = () => {
         <TouchableOpacity style={styles.search}>
           <FontAwesome5 name="search" size={24} color="#333333" />
         </TouchableOpacity>
-        
       </View>
+      
+      <View style={{marginTop:20 }}>
+        <Text style={{fontSize: 20 , fontWeight: 'bold', marginBottom: 20}}> ORDER FOR DELIVERY!</Text>
+
+        <FlatList
+          data={menuTitles}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.menuTitles}>
+              <Text style={{fontSize: 16 , fontWeight: 'bold', color: '#495E57'}}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+          horizontal={true}  
+        />
+      </View>
+
+      
   </View>    
   )
 }
@@ -87,6 +124,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',    
     alignItems: 'center',        
     padding: 10,     
+  },
+
+  menuTitles:{
+    backgroundColor: '#c2d1cc',                
+    height: 50,                  
+    borderRadius: 20,            
+    justifyContent: 'center',    
+    alignItems: 'center',        
+    padding: 10,
+    marginRight: 20,
+     
   }
   
 });
