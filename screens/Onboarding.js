@@ -41,7 +41,7 @@ const Onboarding = () => {
     } catch (e) {
       console.error('Error saving AsyncStorage:', error);
     }
-    navigation.navigate('Profile'); // Navigate to Profile screen
+    navigation.navigate('Home'); // Navigate to Profile screen
   };  
 
   

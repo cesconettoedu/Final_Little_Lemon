@@ -42,35 +42,40 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {state.isOnboardingCompleted ? (
-      // Onboarding completed, user is signed in
-          <>
-            <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </>
-        ) : (
-      // User is NOT signed in
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }}/>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-    
     // <NavigationContainer>
-    //   <Stack.Navigator initialRouteName={state.isOnboardingCompleted ? "Profile" : "Onboarding"}>
-    //     <Stack.Screen 
-    //       name="Onboarding" 
-    //       component={OnboardingScreen} 
-    //       options={{ headerShown: false }}
-    //     />
-    //     <Stack.Screen 
-    //       name="Profile" 
-    //       component={ProfileScreen} 
-    //       options={{ headerShown: false }}
-    //     />
+    //   <Stack.Navigator>
+    //     {state.isOnboardingCompleted ? (
+    //   // Onboarding completed, user is signed in
+    //       <>
+    //         <Stack.Screen name="Home" component={HomeScreen}  options={{ headerShown: false }} />
+    //         <Stack.Screen name='Profile' component={ProfileScreen} />
+    //       </>
+    //     ) : (
+    //   // User is NOT signed in
+    //       <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }}/>
+    //     )}
     //   </Stack.Navigator>
     // </NavigationContainer>
+    
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={state.isOnboardingCompleted ? "Home" : "Onboarding"}>
+        <Stack.Screen 
+          name="Onboarding" 
+          component={OnboardingScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Profile" 
+          component={ProfileScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
     
   );
 }

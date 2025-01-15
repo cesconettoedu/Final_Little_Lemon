@@ -100,9 +100,7 @@ const Profile = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>         
           {/* back button */}
-          <TouchableOpacity 
-           //onPress={navigation.navigate('Onboarding')}
-           >
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <Ionicons name="arrow-back-circle-sharp" size={42} color="#495E57" />          
           </TouchableOpacity>
           
