@@ -19,6 +19,7 @@ import Filters from "../components/Filters";
 import { getSectionListData, useUpdateEffect } from "../utils/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import debounce from "lodash.debounce";
+import User from "../assets/little-lemon/user.png"
 
 const API_URL =
   "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json";
@@ -43,15 +44,15 @@ const Item = ({ name, price, description, image }) => (
 
 const Home = ({ navigation }) => {
   const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
+    firstName: "A",
+    lastName: "B",
     email: "",
     phoneNumber: "",
     orderStatuses: false,
     passwordChanges: false,
     specialOffers: false,
     newsletter: false,
-    image: "",
+    image: require('../assets/little-lemon/user.png'),
   });
   const [data, setData] = useState([]);
   const [searchBarText, setSearchBarText] = useState("");
@@ -59,6 +60,8 @@ const Home = ({ navigation }) => {
   const [filterSelections, setFilterSelections] = useState(
     sections.map(() => false)
   );
+
+  const [menu, setMenu] = useState([]); 
 
   const fetchData = async () => {
     try {
@@ -72,6 +75,12 @@ const Home = ({ navigation }) => {
         image: item.image,
         category: item.category,
       }));
+      console.log('====================================');
+      console.log(menu);
+      console.log('====================================');
+      setMenu(menu)
+
+
       return menu;
     } catch (error) {
       console.error(error);
@@ -79,6 +88,7 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
+    fetchData();
     (async () => {
       let menuItems = [];
       try {
@@ -152,8 +162,9 @@ const Home = ({ navigation }) => {
           style={styles.avatar}
           onPress={() => navigation.navigate("Profile")}
         >
-          {profile.image !== "" ? (
-            <Image source={{ uri: profile.image }} style={styles.avatarImage} />
+          {`${User}` !== "" ? (
+           // <Image source={{ uri: `${User}`}} style={styles.avatarImage} />
+            <Image source={require("../assets/little-lemon/user.png")} style={styles.avatarImage} />
           ) : (
             <View style={styles.avatarEmpty}>
               <Text style={styles.avatarEmpty}>

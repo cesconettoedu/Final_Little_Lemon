@@ -8,6 +8,8 @@ import ProfileScreen from './screens/Profile';
 import SplashScreen from './screens/Splash';
 import HomeScreen from './screens/Home';
 
+import { initDatabase } from './database';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -17,24 +19,28 @@ export default function App() {
   });
 
   useEffect(() => {
-    // Read onboarding status from AsyncStorage when the app starts
-    const checkOnboardingStatus = async () => {
-      try {
-        const onboardingStatus = await AsyncStorage.getItem('onboardingCompleted');
-        console.log(onboardingStatus);
-        
-        if (onboardingStatus === 'true') {
-          setState({ isLoading: false, isOnboardingCompleted: true });
-        } else {
-          setState({ isLoading: false, isOnboardingCompleted: false });
-        }
-      } catch (error) {
-        console.error('Error reading AsyncStorage:', error);
+  const initialize = async () => {
+    try {
+      // Inicializa o banco de dados
+      await initDatabase();
+      
+      // Verifica status do onboarding
+      const onboardingStatus = await AsyncStorage.getItem('onboardingCompleted');
+      console.log(onboardingStatus);
+      
+      if (onboardingStatus === 'true') {
+        setState({ isLoading: false, isOnboardingCompleted: true });
+      } else {
         setState({ isLoading: false, isOnboardingCompleted: false });
       }
-    };
-    checkOnboardingStatus();
-  }, []);
+    } catch (error) {
+      console.error('Error during initialization:', error);
+      setState({ isLoading: false, isOnboardingCompleted: false });
+    }
+  };
+
+  initialize();
+}, []);
 
   // this will be a splash screen
   if (state.isLoading) {
