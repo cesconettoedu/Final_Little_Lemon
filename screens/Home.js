@@ -75,9 +75,6 @@ const Home = ({ navigation }) => {
         image: item.image,
         category: item.category,
       }));
-      console.log('====================================');
-      console.log(menu);
-      console.log('====================================');
       setMenu(menu)
 
 
@@ -88,7 +85,7 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    //fetchData();
     (async () => {
       let menuItems = [];
       try {
@@ -163,7 +160,6 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate("Profile")}
         >
           {`${User}` !== "" ? (
-           // <Image source={{ uri: `${User}`}} style={styles.avatarImage} />
             <Image source={require("../assets/little-lemon/user.png")} style={styles.avatarImage} />
           ) : (
             <View style={styles.avatarEmpty}>
