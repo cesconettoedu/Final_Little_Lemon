@@ -44,15 +44,15 @@ const Item = ({ name, price, description, image }) => (
 
 const Home = ({ navigation }) => {
   const [profile, setProfile] = useState({
-    firstName: "A",
-    lastName: "B",
+    firstName: "E",
+    lastName: "",
     email: "",
     phoneNumber: "",
     orderStatuses: false,
     passwordChanges: false,
     specialOffers: false,
     newsletter: false,
-    image: require('../assets/little-lemon/user.png'),
+    image: "",
   });
   const [data, setData] = useState([]);
   const [searchBarText, setSearchBarText] = useState("");
@@ -60,7 +60,7 @@ const Home = ({ navigation }) => {
   const [filterSelections, setFilterSelections] = useState(
     sections.map(() => false)
   );
-
+  const [primeirNome, setPrimeirNome] = useState("")
   const [menu, setMenu] = useState([]); 
 
   const fetchData = async () => {
@@ -85,7 +85,6 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => {
-    //fetchData();
     (async () => {
       let menuItems = [];
       try {
@@ -98,7 +97,10 @@ const Home = ({ navigation }) => {
         const sectionListData = getSectionListData(menuItems);
         setData(sectionListData);
         const getProfile = await AsyncStorage.getItem("profile");
+        const getFirstName = await AsyncStorage.getItem("@username");
+        setPrimeirNome(getFirstName);     
         setProfile(JSON.parse(getProfile));
+        console.log(profile)
       } catch (e) {
         Alert.alert(e.message);
       }
@@ -159,13 +161,13 @@ const Home = ({ navigation }) => {
           style={styles.avatar}
           onPress={() => navigation.navigate("Profile")}
         >
-          {`${User}` !== "" ? (
+          {`${User}` == "" ? (           
             <Image source={require("../assets/little-lemon/user.png")} style={styles.avatarImage} />
           ) : (
             <View style={styles.avatarEmpty}>
-              <Text style={styles.avatarEmpty}>
-                {profile.firstName && Array.from(profile.firstName)[0]}
-                {profile.lastName && Array.from(profile.lastName)[0]}
+              <Text style={{fontSize: 30}}>
+                {primeirNome && Array.from(primeirNome)[0]}
+                {/* {profile.lastName && Array.from(profile.lastName)[0]} */}
               </Text>
             </View>
           )}
