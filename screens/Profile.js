@@ -8,12 +8,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Checkbox from 'expo-checkbox';
 
 import Logo from '../assets/little-lemon/Logo.png';
-import Photo from '../assets/little-lemon/user.png';
 
 const Profile = () => {
   const navigation = useNavigation();
 
   const [firstName, setFirstName] = useState('');
+  const [primeirNome, setPrimeirNome] = useState("")
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState(0);
@@ -28,7 +28,15 @@ const Profile = () => {
 
   useEffect(() => { 
     //Example usage: Get user data from AsyncStorage  
+    const getFirstName = AsyncStorage.getItem("@username");
+    setNoPic(false);
+    console.log(getFirstName);    
+    setPrimeirNome(getFirstName); 
     const getUser = async () => {
+      if(lastName && phone === null){
+        setLastName('.')
+        setPhone(0)
+      }
       try {
         setFirstName(await AsyncStorage.getItem('@username'));
         setEmail(await AsyncStorage.getItem('@useremail'));
@@ -40,11 +48,7 @@ const Profile = () => {
       }
     };
     getUser();
-
-    if(lastName && phone === null){
-      setLastName('.')
-      setPhone(0)
-    }
+       
   }, []);
   
   const handleSaveChanges = async () => {
@@ -52,6 +56,7 @@ const Profile = () => {
     const secondPair = ["@useremail", `${email}`]
     const thirdPair = ["@userlastname", `${lastName}`]
     const fourthPair = ["@userphone", `${phone}`]
+    const fifthPari = ["@useravatar", `${pic}`]
     try {
       await AsyncStorage.multiSet([firstPair, secondPair, thirdPair, fourthPair]);
       Alert.alert('Info saved');
@@ -81,8 +86,8 @@ const Profile = () => {
     });
 
     setPic(result.assets[0].uri);
+    await AsyncStorage.setItem('@newPhoto', result.assets[0].uri);
     
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -122,7 +127,8 @@ const Profile = () => {
               contentFit="contain"
             />
               : 
-              <Text style={styles.initialNoImageA}>{pic}</Text>
+            <Text style={styles.initialNoImageA}>{firstName && Array.from(firstName)[0]}</Text>
+              
             }
           </View>
       </View>
@@ -140,7 +146,7 @@ const Profile = () => {
               contentFit="contain"
               />
              : 
-              <Text style={styles.initialNoImageB}>{pic}</Text>
+              <Text style={styles.initialNoImageA}>{firstName && Array.from(firstName)[0]}</Text>
             }
           </View>
           <TouchableOpacity 

@@ -100,7 +100,6 @@ const Home = ({ navigation }) => {
         const getFirstName = await AsyncStorage.getItem("@username");
         setPrimeirNome(getFirstName);     
         setProfile(JSON.parse(getProfile));
-        console.log(profile)
       } catch (e) {
         Alert.alert(e.message);
       }
@@ -167,7 +166,6 @@ const Home = ({ navigation }) => {
             <View style={styles.avatarEmpty}>
               <Text style={{fontSize: 30}}>
                 {primeirNome && Array.from(primeirNome)[0]}
-                {/* {profile.lastName && Array.from(profile.lastName)[0]} */}
               </Text>
             </View>
           )}
